@@ -28,6 +28,16 @@ export default function App() {
     }
   };
 
+  //save image
+  const onSaveImageAsync = async ()=>{
+       
+  }
+
+  //add sticker 
+  const onStickerAdd = ()=>{
+       
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -36,8 +46,8 @@ export default function App() {
       {showAppOptions ? (
         <View style={styles.dflex}>
           <IconButton icon='refresh' label='Reset' onPress={()=>{setAppOptions(false); setImageUri(null)}} />
-          <CircleButton />
-          <IconButton icon='save-alt' label='Save' />
+          <CircleButton onPress={onStickerAdd} />
+          <IconButton icon='save-alt' label='Save' onPress={onSaveImageAsync} />
         </View>
       ) : (
         <View style={styles.footerContainer}>
