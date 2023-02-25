@@ -8,6 +8,9 @@ import ImageViewer from './components/ImageViewer';
 import Button from './components/Button';
 import CircleButton from './components/CircleButton';
 import IconButton from './components/IconButton';
+import EmojiPicker from './components/EmojiPicker';
+import EmojiList from './components/EmojiList';
+import EmojiSticker from './components/EmojiSticker';
 
 // image imports
 const PlaceHolderImage = require('./assets/images/background-image.png');
@@ -15,6 +18,9 @@ const PlaceHolderImage = require('./assets/images/background-image.png');
 export default function App() {
   const [imageuri, setImageUri] = useState(null);
   const [showAppOptions, setAppOptions] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [pickedEmoji, setPickedEmoji] = useState(null);
+
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({ allowsEditing: false, quality: 1 });
     if (!result.canceled) {
@@ -29,23 +35,30 @@ export default function App() {
   };
 
   //save image
-  const onSaveImageAsync = async ()=>{
-       
+  const onSaveImageAsync = async () => {
+
   }
 
   //add sticker 
-  const onStickerAdd = ()=>{
-       
+  const onStickerAdd = () => {
+    setIsVisible(true)
+  }
+
+  const onModalClose = () => {
+    setIsVisible(false)
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <ImageViewer placeholderImageSource={PlaceHolderImage} selectedImageSource={imageuri} />
+        {
+          pickedEmoji !== null ? <EmojiSticker imageSize={100} stickerSource={pickedEmoji} /> : null
+        }
       </View>
       {showAppOptions ? (
         <View style={styles.dflex}>
-          <IconButton icon='refresh' label='Reset' onPress={()=>{setAppOptions(false); setImageUri(null)}} />
+          <IconButton icon='refresh' label='Reset' onPress={() => { setAppOptions(false); setImageUri(null) }} />
           <CircleButton onPress={onStickerAdd} />
           <IconButton icon='save-alt' label='Save' onPress={onSaveImageAsync} />
         </View>
@@ -54,7 +67,11 @@ export default function App() {
           <Button label='Choose a photo' theme={'primary'} onPress={pickImageAsync} />
           <Button label='Use this photo' />
         </View>
+        
       )}
+      <EmojiPicker isVisible={isVisible} onClose={onModalClose}>
+        <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
+      </EmojiPicker>
       <StatusBar style='auto' />
     </View>
   );
