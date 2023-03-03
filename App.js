@@ -86,6 +86,7 @@ export default function App() {
             onPress={() => {
               setAppOptions(false);
               setImageUri(null);
+              setPickedEmoji(null);
             }}
           />
           <CircleButton onPress={onStickerAdd} />
